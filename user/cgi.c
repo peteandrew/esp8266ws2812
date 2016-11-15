@@ -15,11 +15,10 @@ flash as a binary. Also handles the hit counter on the main page.
 
 #include <esp8266.h>
 #include "cgi.h"
-#include "io.h"
+#include "leds.h"
 
 
-//Cgi that turns the LED on or off according to the 'led' param in the POST data
-int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData) {
+int ICACHE_FLASH_ATTR cgiLeds(HttpdConnData *connData) {
 	int len;
 	char buff[1024];
 
@@ -28,44 +27,55 @@ int ICACHE_FLASH_ATTR cgiLed(HttpdConnData *connData) {
 		return HTTPD_CGI_DONE;
 	}
 
-	len=httpdFindArg(connData->post->buff, "led", buff, sizeof(buff));
+	len=httpdFindArg(connData->post->buff, "leds", buff, sizeof(buff));
 	if (len!=0) {
-		setLedFlashState(atoi(buff));
+		os_printf("Set number of LEDs to %s", buff);
+		setNumLeds((uint16_t)atoi(buff));
 	}
 
-	httpdRedirect(connData, "led.tpl");
+	len=httpdFindArg(connData->post->buff, "pattern", buff, sizeof(buff));
+	if (len!=0) {
+		os_printf("Set pattern to %s", buff);
+		setPattern((uint8_t)atoi(buff));
+	}
+
+	len=httpdFindArg(connData->post->buff, "red", buff, sizeof(buff));
+	if (len!=0) {
+		os_printf("Set red to %s", buff);
+		setRed((uint8_t)atoi(buff));
+	}
+
+	len=httpdFindArg(connData->post->buff, "green", buff, sizeof(buff));
+	if (len!=0) {
+		os_printf("Set green to %s", buff);
+		setGreen((uint8_t)atoi(buff));
+	}
+
+	len=httpdFindArg(connData->post->buff, "blue", buff, sizeof(buff));
+	if (len!=0) {
+		os_printf("Set blue to %s", buff);
+		setBlue((uint8_t)atoi(buff));
+	}
+
+	httpdRedirect(connData, "index.tpl");
 	return HTTPD_CGI_DONE;
 }
 
 
-
-//Template code for the led page.
-int ICACHE_FLASH_ATTR tplLed(HttpdConnData *connData, char *token, void **arg) {
+int ICACHE_FLASH_ATTR tplLeds(HttpdConnData *connData, char *token, void **arg) {
 	char buff[128];
 	if (token==NULL) return HTTPD_CGI_DONE;
 
-	os_strcpy(buff, "Unknown");
-	if (os_strcmp(token, "ledstate")==0) {
-		if (getLedFlashState()) {
-			os_strcpy(buff, "on");
-		} else {
-			os_strcpy(buff, "off");
-		}
-	}
-	httpdSend(connData, buff, -1);
-	return HTTPD_CGI_DONE;
-}
-
-static long hitCounter=0;
-
-//Template code for the counter on the index page.
-int ICACHE_FLASH_ATTR tplCounter(HttpdConnData *connData, char *token, void **arg) {
-	char buff[128];
-	if (token==NULL) return HTTPD_CGI_DONE;
-
-	if (os_strcmp(token, "counter")==0) {
-		hitCounter++;
-		os_sprintf(buff, "%ld", hitCounter);
+	if (os_strcmp(token, "numleds")==0) {
+		os_sprintf(buff, "%d", (int)getNumLeds());
+	} else if (os_strcmp(token, "pattern")==0) {
+		os_sprintf(buff, "%d", (int)getPattern());
+	} else if (os_strcmp(token, "red")==0) {
+		os_sprintf(buff, "%d", (int)getRed());
+	} else if (os_strcmp(token, "green")==0) {
+		os_sprintf(buff, "%d", (int)getGreen());
+	} else if (os_strcmp(token, "blue")==0) {
+		os_sprintf(buff, "%d", (int)getBlue());
 	}
 	httpdSend(connData, buff, -1);
 	return HTTPD_CGI_DONE;

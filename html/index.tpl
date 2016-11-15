@@ -1,28 +1,18 @@
+<!DOCTYPE html>
 <html>
 <head><title>Esp8266 web server</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <div id="main">
-<h1>It Works</h1>
-<p>
-If you see this, it means the tiny li'l website in your ESP8266 does actually work. Fyi, this page has
-been loaded <b>%counter%</b> times.
-<ul>
-<li>If you haven't connected this device to your WLAN network now, you can <a href="/wifi">do so.</a></li>
-<li>You can also control the <a href="led.tpl">LED</a>.</li>
-<li>If you have a firmware upgrade file and the module is compiled for firmware upgrades, you 
-can <a href="flash/index.html">upgrade the firmware</a> of this module.</li>
-<li>Esphttpd now also supports <a href="websocket/index.html">websockets</a>.</li>
-<li>Test esphttpd using the built-in <a href="test/">test suite</a></li>
-<li>And because I can, here's a link to my <a href="http://spritesmods.com/?f=esphttpd">website</a></ul>
-</ul>
-</p>
-
-<p>And because we're on the Internets now, here are the required pictures of cats:<br />
-<img src="cats/cross-eyed-cat.jpg"><br />
-<img src="cats/junge-katze-iv.jpg"><br />
-<img src="cats/kitten-loves-toy.jpg"><br />
-</p>
+<h1>LED control</h1>
+<form method="post" action="index.cgi">
+<p><label for="leds">Number of LEDs</label><input id="leds" name="leds" type="text" max="50" value="%numleds%" /></p>
+<p><label for="pattern">Pattern</label><input id="pattern" name="pattern" type="text" max="13" value="%pattern%" /></p>
+<p><label for="red">Red</label><input id="red" name="red" type="text" max="255" value="%red%" /></p>
+<p><label for="green">Green</label><input id="green" name="green" type="text" max="255" value="%green%" /></p>
+<p><label for="blue">Blue</label><input id="blue" name="blue" type="text" max="255" value="%blue%" /></p>
+<p><input type="submit" value="Update"></p>
+</form>
 </div>
 </body></html>
