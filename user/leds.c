@@ -1,8 +1,8 @@
 #include <c_types.h>
 #include "leds.h"
 
-static uint16_t leds = 35;
-static uint8_t patternNum = 9;
+static uint16_t leds = 12;
+static uint8_t patternNum = 1;
 static uint8_t red = 100;
 static uint8_t green = 20;
 static uint8_t blue = 20;

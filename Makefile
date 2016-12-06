@@ -42,7 +42,7 @@ ESPTOOL		?= esptool.py
 ESPPORT		?= /dev/ttyUSB0
 #ESPDELAY indicates seconds to wait between flashing the two binary images
 ESPDELAY	?= 3
-ESPBAUD		?= 460800
+ESPBAUD		?= 57600
 
 #Appgen path and name
 APPGEN		?= $(SDK_BASE)/tools/gen_appbin.py

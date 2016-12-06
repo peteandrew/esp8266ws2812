@@ -60,7 +60,7 @@ ldscript_memspecific.ld:
 #define makeuser
 #$1: $(APP_AR)
 #	$(vecho) "LD $@"
-#	$(Q) $(LD) -Llibesphttpd -L$(SDK_LIBDIR) $(LD_SCRIPT) $(EXTRA_LD_SCRIPTS) $(LDFLAGS) -Wl,--start-group $(LIBS) $(APP_AR) -Wl,--end-group -o $@ 
+#	$(Q) $(LD) -Llibesphttpd -L$(SDK_LIBDIR) $(LD_SCRIPT) $(EXTRA_LD_SCRIPTS) $(LDFLAGS) -Wl,--start-group $(LIBS) $(APP_AR) -Wl,--end-group -o $@
 #	$(Q) $(OBJCP) --only-section .text -O binary $2 build/eagle.app.v6.text.bin
 #	$(Q) $(OBJCP) --only-section .data -O binary $2 build/eagle.app.v6.data.bin
 #	$(Q) $(OBJCP) --only-section .rodata -O binary $2 build/eagle.app.v6.rodata.bin
@@ -84,7 +84,7 @@ $(FW_BASE): $(TARGET_BIN) libesphttpd/mkupgimg/mkupgimg
 	$(Q) libesphttpd/mkupgimg/mkupgimg $(TARGET_BIN_USR1) $(TARGET_BIN_USR2) $(TAGNAME) $(TARGET_OTAFILE)
 
 flash: $(TARGET_OUT) $(FW_BASE)
-	$(Q) $(ESPTOOL) $(ESPTOOL_OPTS) write_flash $(ESPTOOL_FLASHDEF) 0x00000 "$(SDK_BASE)/bin/boot_v1.5.bin" 0x1000 $(TARGET_BIN_USR1)
+	$(Q) $(ESPTOOL) $(ESPTOOL_OPTS) write_flash $(ESPTOOL_FLASHDEF) 0x00000 "$(SDK_BASE)/bin/boot_v1.6.bin" 0x1000 $(TARGET_BIN_USR1)
 
 blankflash:
 	$(Q) $(ESPTOOL) $(ESPTOOL_OPTS) write_flash $(ESPTOOL_FLASHDEF) $(BLANKPOS) $(SDK_BASE)/bin/blank.bin $(INITDATAPOS) $(SDK_BASE)/bin/esp_init_data_default.bin
@@ -93,4 +93,3 @@ httpflash: $(FW_BASE)
 	$(Q) curl -X POST --data-binary '@build/httpd.ota' $(ESPIP)/flash/upload > /dev/null
 	$(Q) curl $(ESPIP)/flash/reboot
 	$(Q) echo -e '\nDone'
-

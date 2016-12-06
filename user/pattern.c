@@ -50,7 +50,7 @@ uint32_t hex_pattern( uint8_t pattern, uint16_t light, uint16_t lights, uint32_t
     switch( pattern ) {
         //For button
         case PTRN_CONST: if( clr != NULL ) hex = clr[0] | clr[1]<<8 | clr[2]<<16; break;
-        case 1: hex = (light == (frame % lights))?0xFFFFFF:0x000000; break;
+        case 1: hex = (light == (frame % lights))?0x999999:0x000000; break;
         case 2: hex = HSVtoHEX( light*(1/12.) + frame*(1./48.), 1, 1.0 ); break;
         case 3: hex = ((int32_t)((frame+light)%lights)>(lights-2))?0xffffff:0; break; //The worm.
         case 4: hex = HSVtoHEX( light*.03 - frame*.04, 1,  (((((-light<<3)%256) - ((frame<<3)%256)+256)%256) ) /256.0*0.9-0.1); break; //Long, smooth, transitioning. 1.0
